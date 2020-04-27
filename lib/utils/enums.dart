@@ -1,0 +1,5 @@
+enum LineTypes { HORIZONTAL, VERTICAL, DIAGONAL_ASCENDING, DIAGONAL_DESCENDING }
+
+enum Turn { X, O }
+
+enum Player { ONE, TWO, COMPUTER }
