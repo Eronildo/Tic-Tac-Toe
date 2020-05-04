@@ -15,12 +15,21 @@ class GridWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        buildGridLines(),
-        buildGridFields(),
-        victory != null ? buildVictoryLine() : Container(),
-      ],
+    var screenWidth = MediaQuery.of(context).size.width;
+    var gridSize = screenWidth - (screenWidth / 8);
+
+    return Center(
+      child: Container(
+        width: gridSize,
+        height: gridSize,
+        child: Stack(
+          children: <Widget>[
+            buildGridLines(),
+            buildGridFields(),
+            victory != null ? buildVictoryLine() : Container(),
+          ],
+        ),
+      ),
     );
   }
 

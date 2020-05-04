@@ -26,9 +26,9 @@ class MenuPage extends StatelessWidget {
         child: Stack(
           children: <Widget>[
             getMenuButton(context, "assets/images/one_player.png", true,
-                screenHeight * 3 / 8, screenWidth * 1 / 8),
+                screenHeight * 3 / 9, screenWidth / 8, screenHeight / 12),
             getMenuButton(context, "assets/images/two_players.png", false,
-                screenHeight * 1 / 2, screenWidth * 1 / 8),
+                screenHeight / 2, screenWidth / 16, screenHeight / 12),
           ],
         ),
       ),
@@ -36,7 +36,7 @@ class MenuPage extends StatelessWidget {
   }
 
   Widget getMenuButton(BuildContext context, String imageAsset,
-      bool isOnePlayer, double top, double left) {
+      bool isOnePlayer, double top, double left, double size) {
     return Positioned(
       top: top,
       left: left,
@@ -46,7 +46,7 @@ class MenuPage extends StatelessWidget {
           Navigator.of(context).push(
               SlidePageRoute(widget: GamePage(isOnePlayer), isRight: false));
         },
-        child: Image.asset(imageAsset, height: 60.0),
+        child: Image.asset(imageAsset, height: size),
       ),
     );
   }

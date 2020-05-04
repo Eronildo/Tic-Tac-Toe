@@ -7,7 +7,8 @@ import 'package:tictactoe/utils/constants.dart';
 import 'package:tictactoe/utils/enums.dart';
 import 'package:tictactoe/utils/field_checker.dart';
 import 'package:tictactoe/widgets/grid_widget.dart';
-import 'package:tictactoe/widgets/player_score_widget.dart';
+import 'package:tictactoe/widgets/player_one_score_widget.dart';
+import 'package:tictactoe/widgets/player_two_score_widget.dart';
 import 'package:tictactoe/widgets/popup_widget.dart';
 
 class GamePage extends StatefulWidget {
@@ -38,6 +39,8 @@ class _GamePageState extends State<GamePage> {
 
   @override
   Widget build(BuildContext context) {
+    var screenHeight = MediaQuery.of(context).size.height;
+
     if (widget.isOnePlayer)
       _ai = AI(_field, Constants.playerOne, Constants.playerTwo);
 
@@ -50,14 +53,23 @@ class _GamePageState extends State<GamePage> {
         decoration: _getBackgroundDecoration(),
         child: Stack(
           children: <Widget>[
-            _buildPlayersScores(),
-            GridWidget(
-              victory: _victory,
-              field: _field,
-              onCellTap: _onCellTap,
+            Column(
+              children: <Widget>[
+                SizedBox(
+                  height: screenHeight / 80,
+                ),
+                _buildPlayersScores(screenHeight),
+                GridWidget(
+                  victory: _victory,
+                  field: _field,
+                  onCellTap: _onCellTap,
+                ),
+              ],
             ),
-            _buildBackToMenuButton(),
-            _showPopUp ? _showWinDrawPopup() : Container(),
+            screenHeight >= 750.0
+                ? _buildBackToMenuButton(screenHeight)
+                : Container(),
+            _showPopUp ? _showWinDrawPopup() : Container()
           ],
         ),
       ),
@@ -84,19 +96,18 @@ class _GamePageState extends State<GamePage> {
             fit: BoxFit.fill),
       );
 
-  Widget _buildPlayersScores() => Padding(
-        padding: const EdgeInsets.only(top: 20.0),
+  Widget _buildPlayersScores(double screenHeight) => Container(
+        height: screenHeight / 4.8,
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            PlayerScoreWidget(
-              player: Player.ONE,
+            PlayerOneScoreWidget(
               scorePoints: _playerOneScore,
               showShadow: _currentTurn == Turn.X,
             ),
-            PlayerScoreWidget(
-              player: widget.isOnePlayer ? Player.COMPUTER : Player.TWO,
+            PlayerTwoScoreWidget(
+              isComputer: widget.isOnePlayer,
               scorePoints: _playerTwoScore,
               showShadow: _currentTurn == Turn.O,
             ),
@@ -104,16 +115,15 @@ class _GamePageState extends State<GamePage> {
         ),
       );
 
-  Widget _buildBackToMenuButton() => Positioned(
-        bottom: 20.0,
+  Widget _buildBackToMenuButton(double screenHeight) => Positioned(
+        left: 20.0,
+        bottom: 45.0,
         child: FlatButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Image.asset(
-            "assets/images/back_menu.png",
-            fit: BoxFit.fill,
-          ),
+          child: Image.asset("assets/images/back_menu.png",
+              fit: BoxFit.fill, height: screenHeight / 8),
         ),
       );
 
